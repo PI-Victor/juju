@@ -8,6 +8,7 @@ import (
 	_ "github.com/juju/juju/caas/kubernetes/provider"
 	_ "github.com/juju/juju/provider/azure"
 	_ "github.com/juju/juju/provider/cloudsigma"
+	_ "github.com/juju/juju/provider/digitalocean"
 	_ "github.com/juju/juju/provider/ec2"
 	_ "github.com/juju/juju/provider/gce"
 	_ "github.com/juju/juju/provider/joyent"

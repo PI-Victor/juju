@@ -130,6 +130,14 @@
   revision = "01aeca54ebda6e0fbfafd0a524d234159c05ec20"
 
 [[projects]]
+  digest = "1:07e626ebec923961e2415714872c5993c6cd03558fb7dce364373e27ad50db9a"
+  name = "github.com/digitalocean/godo"
+  packages = ["."]
+  pruneopts = ""
+  revision = "6a6ce62154ba780ecbb97bbbb13a4e9e0b157070"
+  version = "v1.4.2"
+
+[[projects]]
   digest = "1:85557947084dd9599b76d06e82f3e35bfdfa109dc4cf195ecf34bf78a91fa11c"
   name = "github.com/docker/distribution"
   packages = [
@@ -1020,6 +1028,14 @@
   version = "v1.0.2"
 
 [[projects]]
+  branch = "master"
+  digest = "1:81f435c83e3523a7ee3f277769727f73ca66218ca8188d96a0935a4841b47a76"
+  name = "github.com/tent/http-link-go"
+  packages = ["."]
+  pruneopts = ""
+  revision = "ac974c61c2f990f4115b119354b5e0b47550e888"
+
+[[projects]]
   digest = "1:e5396b66ff8c90a824413a27fd41ed4413161c949fa681869bd2caf714a155f9"
   name = "github.com/vmware/govmomi"
   packages = [
@@ -1662,6 +1678,7 @@
     "github.com/bmizerany/pat",
     "github.com/coreos/go-systemd/dbus",
     "github.com/coreos/go-systemd/unit",
+    "github.com/digitalocean/godo",
     "github.com/docker/distribution/reference",
     "github.com/dustin/go-humanize",
     "github.com/golang/mock/gomock",
