@@ -1,36 +1,29 @@
 package digitalocean
 
 import (
-	"context"
 	"sync"
 
-	"golang.org/x/oauth2"
+
 
 	"github.com/digitalocean/godo"
 
 	"github.com/juju/errors"
+	"github.com/juju/juju/constraints"
 	"github.com/juju/juju/environs"
 	"github.com/juju/juju/environs/config"
+	envCtx "github.com/juju/juju/environs/context"
 	"github.com/juju/juju/instance"
+	"github.com/juju/version"
 )
 
-type doConnection interface {
-	VerifyCredentials() error
-
-	Instance(id, zone string) (godo.Droplet, error)
-	Instances(prefix string, statuses ...string) ([]godo.Droplet, error)
-}
-
 type environ struct {
-	name  string
-	uuid  string
+	name string
+
 	cloud environs.CloudSpec
-	dgo   doConnection
+	dgo   *godo.Client
 
 	lock sync.Mutex // lock protects access to ecfg
 	ecfg *environConfig
-
-	namespace instance.Namespace
 }
 
 var (
@@ -42,12 +35,23 @@ func (e *environ) Name() string {
 	return e.name
 }
 
-func (e *environ) SetConfig() string {
-	return
+func (e *environ) Create(envCtx.ProviderCallContext, environs.CreateParams) error {
+	return nil
+}
+
+func (e *environ) SetConfig() error {
+	cfg, err := providerInstance.newConfig(cfg)
+	if err != nil {
+		return errors.Trace(err)
+	}
+	return nil
+}
+func (e environ) AdoptResources(ctx envCtx.ProviderCallContext, controllerUUID string, fromVersion version.Number) error {
+	return nil
 }
 
 func (e *environ) Region() string {
-	return
+	return ""
 }
 
 func (e *environ) Provider() environs.EnvironProvider {
@@ -55,17 +59,38 @@ func (e *environ) Provider() environs.EnvironProvider {
 }
 
 func (e *environ) Config() *config.Config {
-	e.lock.Lock()
-	defer e.lock.Unlock()
-
 	return e.ecfg.config
 }
 
 func (e *environ) PrepareForBootstrap(ctx environs.BootstrapContext) error {
-	if ctx.ShouldVerifyCredentials() {
-		if err := e.dgo.VerifyCredentials(); err != nil {
-			return errors.Trace(err)
-		}
-	}
+	return nil
+}
+
+func (e *environ) Bootstrap(ctx environs.BootstrapContext, callCtx envCtx.ProviderCallContext, params environs.BootstrapParams) (*environs.BootstrapResult, error) {
+	return nil, nil
+}
+
+func (e *environ) AllInstances(ctx envCtx.ProviderCallContext) ([]instance.Instance, error) {
+	return []instance.Instance{}, nil
+}
+
+func (e *environ) ConstraintsValidator(ctx envCtx.ProviderCallContext) (constraints.Validator, error) {
+	validator := constraints.NewValidator()
+	return validator, nil
+}
+
+func (e *environ) ControllerInstances(ctx envCtx.ProviderCallContext, controllerUUID string) ([]instance.Id, error) {
+	return []instance.Id{}, nil
+}
+
+func (e *environ) Destroy(ctx envCtx.ProviderCallContext) error {
+	return nil
+}
+
+func (e *environ) DestroyController(ctx envCtx.ProviderCallContext, controllerUUID string) error {
+	return nil
+}
+
+func (e *environ) supportedInstanceTypes(ctx envCtx.ProviderCallContext) ([]instances.InstanceType, error) {
 	return nil
 }
