@@ -3,8 +3,6 @@ package digitalocean
 import (
 	"sync"
 
-
-
 	"github.com/digitalocean/godo"
 
 	"github.com/juju/errors"
@@ -39,14 +37,18 @@ func (e *environ) Create(envCtx.ProviderCallContext, environs.CreateParams) erro
 	return nil
 }
 
-func (e *environ) SetConfig() error {
-	cfg, err := providerInstance.newConfig(cfg)
+func (e *environ) SetConfig(cfg *config.Config) error {
+	ecfg, err := providerInstance.newConfig(cfg)
 	if err != nil {
 		return errors.Trace(err)
 	}
 	return nil
 }
-func (e environ) AdoptResources(ctx envCtx.ProviderCallContext, controllerUUID string, fromVersion version.Number) error {
+func (e environ) AdoptResources(
+	ctx envCtx.ProviderCallContext,
+	controllerUUID string,
+	fromVersion version.Number,
+) error {
 	return nil
 }
 
@@ -66,7 +68,11 @@ func (e *environ) PrepareForBootstrap(ctx environs.BootstrapContext) error {
 	return nil
 }
 
-func (e *environ) Bootstrap(ctx environs.BootstrapContext, callCtx envCtx.ProviderCallContext, params environs.BootstrapParams) (*environs.BootstrapResult, error) {
+func (e *environ) Bootstrap(
+	ctx environs.BootstrapContext,
+	callCtx envCtx.ProviderCallContext,
+	params environs.BootstrapParams,
+) (*environs.BootstrapResult, error) {
 	return nil, nil
 }
 
@@ -88,9 +94,5 @@ func (e *environ) Destroy(ctx envCtx.ProviderCallContext) error {
 }
 
 func (e *environ) DestroyController(ctx envCtx.ProviderCallContext, controllerUUID string) error {
-	return nil
-}
-
-func (e *environ) supportedInstanceTypes(ctx envCtx.ProviderCallContext) ([]instances.InstanceType, error) {
 	return nil
 }

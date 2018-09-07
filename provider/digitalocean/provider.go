@@ -9,7 +9,10 @@ import (
 	"github.com/juju/loggo"
 
 	"github.com/digitalocean/godo"
+	"github.com/juju/errors"
 	"github.com/juju/juju/environs"
+	"github.com/juju/juju/environs/config"
+	envCtx "github.com/juju/juju/environs/context"
 )
 
 var logger = loggo.GetLogger("juju.provider.digitalocean")
@@ -49,7 +52,6 @@ func (p environProvider) Open(args environs.OpenParams) (environs.Environ, error
 func newDGOClient(cloud environs.CloudSpec) *godo.Client {
 	creds := cloud.Credential.Attributes()
 	t := &tokenSource{
-		// TODO: pull this from the config
 		AccessToken: creds["AccessToken"],
 	}
 	newOauth2 := oauth2.NewClient(context.Background(), t)
@@ -62,4 +64,13 @@ func (p environProvider) CloudSchema() *jsonschema.Schema {
 
 func newDOClient(cloud environs.CloudSpec) (*godo.Client, error) {
 	return nil, nil
+}
+
+func (environProvider) newConfig(cfg *config.Config) error {
+	return nil
+}
+
+// Ping tests the connection to the cloud, to verify the endpoint is valid.
+func (p environProvider) Ping(ctx envCtx.ProviderCallContext, endpoint string) error {
+	return errors.NotImplementedf("Ping")
 }
