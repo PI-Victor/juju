@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	provider = "digitalocean"
+	providerType = "digitalocean"
 )
 
 func init() {
