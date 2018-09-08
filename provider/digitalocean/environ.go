@@ -5,16 +5,17 @@ import (
 
 	"github.com/digitalocean/godo"
 
-	"github.com/juju/errors"
 	"github.com/juju/juju/constraints"
 	"github.com/juju/juju/environs"
 	"github.com/juju/juju/environs/config"
 	envCtx "github.com/juju/juju/environs/context"
+	"github.com/juju/juju/environs/instances"
 	"github.com/juju/juju/instance"
+	"github.com/juju/juju/storage"
 	"github.com/juju/version"
 )
 
-type environ struct {
+type doEnviron struct {
 	name string
 
 	cloud environs.CloudSpec
@@ -25,26 +26,21 @@ type environ struct {
 }
 
 var (
-	_ environs.Environ           = (*environ)(nil)
-	_ environs.NetworkingEnviron = (*environ)(nil)
+	_ environs.Environ = (*doEnviron)(nil)
 )
 
-func (e *environ) Name() string {
+func (e *doEnviron) Name() string {
 	return e.name
 }
 
-func (e *environ) Create(envCtx.ProviderCallContext, environs.CreateParams) error {
+func (e *doEnviron) Create(envCtx.ProviderCallContext, environs.CreateParams) error {
 	return nil
 }
 
-func (e *environ) SetConfig(cfg *config.Config) error {
-	ecfg, err := providerInstance.newConfig(cfg)
-	if err != nil {
-		return errors.Trace(err)
-	}
-	return nil
+func (e *doEnviron) SetConfig(cfg *config.Config) error {
+	return providerInstance.newConfig(cfg)
 }
-func (e environ) AdoptResources(
+func (e *doEnviron) AdoptResources(
 	ctx envCtx.ProviderCallContext,
 	controllerUUID string,
 	fromVersion version.Number,
@@ -52,23 +48,23 @@ func (e environ) AdoptResources(
 	return nil
 }
 
-func (e *environ) Region() string {
+func (e *doEnviron) Region() string {
 	return ""
 }
 
-func (e *environ) Provider() environs.EnvironProvider {
+func (e *doEnviron) Provider() environs.EnvironProvider {
 	return providerInstance
 }
 
-func (e *environ) Config() *config.Config {
+func (e *doEnviron) Config() *config.Config {
 	return e.ecfg.config
 }
 
-func (e *environ) PrepareForBootstrap(ctx environs.BootstrapContext) error {
+func (e *doEnviron) PrepareForBootstrap(ctx environs.BootstrapContext) error {
 	return nil
 }
 
-func (e *environ) Bootstrap(
+func (e *doEnviron) Bootstrap(
 	ctx environs.BootstrapContext,
 	callCtx envCtx.ProviderCallContext,
 	params environs.BootstrapParams,
@@ -76,23 +72,55 @@ func (e *environ) Bootstrap(
 	return nil, nil
 }
 
-func (e *environ) AllInstances(ctx envCtx.ProviderCallContext) ([]instance.Instance, error) {
+func (e *doEnviron) AllInstances(ctx envCtx.ProviderCallContext) ([]instance.Instance, error) {
 	return []instance.Instance{}, nil
 }
 
-func (e *environ) ConstraintsValidator(ctx envCtx.ProviderCallContext) (constraints.Validator, error) {
+func (e *doEnviron) StorageProvider(t storage.ProviderType) (storage.Provider, error) {
+	return &doStorageProvider{}, nil
+}
+
+func (e *doEnviron) StorageProviderTypes() ([]storage.ProviderType, error) {
+	return nil, nil
+}
+
+func (e *doEnviron) ConstraintsValidator(ctx envCtx.ProviderCallContext) (constraints.Validator, error) {
 	validator := constraints.NewValidator()
 	return validator, nil
 }
 
-func (e *environ) ControllerInstances(ctx envCtx.ProviderCallContext, controllerUUID string) ([]instance.Id, error) {
+func (e *doEnviron) ControllerInstances(ctx envCtx.ProviderCallContext, controllerUUID string) ([]instance.Id, error) {
 	return []instance.Id{}, nil
 }
 
-func (e *environ) Destroy(ctx envCtx.ProviderCallContext) error {
+func (e *doEnviron) Destroy(ctx envCtx.ProviderCallContext) error {
 	return nil
 }
 
-func (e *environ) DestroyController(ctx envCtx.ProviderCallContext, controllerUUID string) error {
+func (e *doEnviron) DestroyController(ctx envCtx.ProviderCallContext, controllerUUID string) error {
+	return nil
+}
+
+func (e *doEnviron) Instances(ctx envCtx.ProviderCallContext, ids []instance.Id) ([]instance.Instance, error) {
+	return []instance.Instance{}, nil
+}
+
+func (e *doEnviron) InstanceTypes(envCtx.ProviderCallContext, constraints.Value) (instances.InstanceTypesWithCostMetadata, error) {
+	return instances.InstanceTypesWithCostMetadata{}, nil
+}
+
+func (e *doEnviron) MaintainInstance(envCtx.ProviderCallContext, environs.StartInstanceParams) error {
+	return nil
+}
+
+func (e *doEnviron) PrecheckInstance(ctx envCtx.ProviderCallContext, args environs.PrecheckInstanceParams) error {
+	return nil
+}
+
+func (e *doEnviron) StartInstance(ctx envCtx.ProviderCallContext, args environs.StartInstanceParams) (*environs.StartInstanceResult, error) {
+	return nil, nil
+}
+
+func (e *doEnviron) StopInstances(ctx envCtx.ProviderCallContext, ids ...instance.Id) error {
 	return nil
 }
