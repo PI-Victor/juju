@@ -341,19 +341,20 @@ func DefaultCloudDescription(cloudType string) string {
 }
 
 var defaultCloudDescription = map[string]string{
-	"aws":         "Amazon Web Services",
-	"aws-china":   "Amazon China",
-	"aws-gov":     "Amazon (USA Government)",
-	"google":      "Google Cloud Platform",
-	"azure":       "Microsoft Azure",
-	"azure-china": "Microsoft Azure China",
-	"rackspace":   "Rackspace Cloud",
-	"joyent":      "Joyent Cloud",
-	"cloudsigma":  "CloudSigma Cloud",
-	"lxd":         "LXD Container Hypervisor",
-	"maas":        "Metal As A Service",
-	"openstack":   "Openstack Cloud",
-	"oracle":      "Oracle Compute Cloud Service",
+	"aws":          "Amazon Web Services",
+	"aws-china":    "Amazon China",
+	"aws-gov":      "Amazon (USA Government)",
+	"google":       "Google Cloud Platform",
+	"azure":        "Microsoft Azure",
+	"azure-china":  "Microsoft Azure China",
+	"rackspace":    "Rackspace Cloud",
+	"joyent":       "Joyent Cloud",
+	"cloudsigma":   "CloudSigma Cloud",
+	"lxd":          "LXD Container Hypervisor",
+	"maas":         "Metal As A Service",
+	"openstack":    "Openstack Cloud",
+	"oracle":       "Oracle Compute Cloud Service",
+	"digitalocean": "Digital Ocean",
 }
 
 // WritePublicCloudMetadata marshals to YAML and writes the cloud metadata
